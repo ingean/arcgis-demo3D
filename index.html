@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="initial-scale=1,maximum-scale=1,user-scalable=no"
+    />
+
+    <title>Demo | 3D-analyser</title>
+
+    <!-- Stylesheets and favicon -->
+    <link rel="stylesheet" href="https://js.arcgis.com/4.20/esri/themes/light/main.css">
+    <link rel="stylesheet" type="text/css" href="https://js.arcgis.com/calcite-components/1.0.0-beta.61/calcite.css" />
+    <link rel="stylesheet" type="text/css" href="css/main.css" />
+
+    <link rel="shortcut icon" type="image/png" href="images/geodata.png" />
+
+    <script src="https://js.arcgis.com/4.20/"></script>
+    <script type="module" src="https://js.arcgis.com/calcite-components/1.0.0-beta.61/calcite.esm.js"></script>
+  </head>
+  <body>
+    
+    <!-- Navigation bar -->
+ 
+
+    <main>
+      <!-- Action bar -->
+      <calcite-action-bar>
+        <calcite-action-group>
+            <calcite-action id="daylight" class="toggle-widgets" text="Dagslys" icon="brightness" active="true"></calcite-action>
+            <calcite-action id="shadow" class="toggle-widgets" text="Skygge" icon="contrast"></calcite-action>
+            <calcite-action id="elevation" class="toggle-widgets" text="Terrengprofil" icon="altitude"></calcite-action>
+            <calcite-action id="los" class="toggle-widgets" text="Siktlinjer" icon="line-of-sight"></calcite-action>
+        </calcite-action-group>
+        <calcite-action-group>
+            <calcite-action text="Innstillinger" icon="gear"></calcite-action>
+        </calcite-action-group>
+    </calcite-action-bar>
+      
+      
+      
+      <!-- Map -->
+      <div class="wrapper">
+        <div id="viewDiv" class="esri-view"></div>
+      </div>
+    </main>
+    
+    <!-- Scripts-->
+    <script type="text/javascript" src="modules/main.js"></script>
+  </body>
+</html>
