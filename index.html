@@ -34,11 +34,30 @@
             <calcite-action id="los" class="toggle-widgets" text="Siktlinjer" icon="line-of-sight"></calcite-action>
         </calcite-action-group>
         <calcite-action-group>
-            <calcite-action text="Innstillinger" icon="gear"></calcite-action>
+            <calcite-action id="settings" class="toggle-panels" text="Innstillinger" icon="gear"></calcite-action>
         </calcite-action-group>
-    </calcite-action-bar>
+      </calcite-action-bar>
       
-      
+      <!-- Floating Panels -->
+      <calcite-panel id="panel-settings" class="panel-right flow-panel" heading="Innstillinger" style="display:none;">
+        <calcite-icon class="flow-panel-item" icon="gear" slot="header-actions-end"></calcite-icon>
+        <calcite-notice id="notice-portalId" color="red">
+          <div slot="title">Ugyldig portal-ID</div>
+          <div slot="message">Angi en gyldig portal-ID til en 3D scene som er offentlig tilgjengelig.</div>
+      </calcite-notice>
+        <calcite-radio-group id="radio-sceneSelect" class="flow-panel-item">
+          <calcite-radio-group-item value="USA" checked>USA</calcite-radio-group-item>
+          <calcite-radio-group-item value="Norge">Norge</calcite-radio-group-item>
+        </calcite-radio-group>
+        <calcite-label class="flow-panel-item">
+          Portal item ID:
+          <calcite-inline-editable>
+            <calcite-input id="txt-portalID" class="flow-panel-item" value="f2220db76c6448b4be8083d19ef4cf8d" placeholder="Portal item ID"></calcite-input>
+          </calcite-inline-editable>
+        </calcite-label>
+        <calcite-button id="btn-updateScene" class="flow-panel-item">Bytt webscene</calcite-button>
+      </calcite-panel>
+     
       
       <!-- Map -->
       <div class="wrapper">

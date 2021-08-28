@@ -1,5 +1,6 @@
 require([
   "modules/ui.js",
+  "modules/settings.js",
   "esri/intl",
   "esri/WebScene",
   "esri/views/SceneView",
@@ -7,20 +8,20 @@ require([
   "esri/widgets/ShadowAccumulation",
   "esri/widgets/ElevationProfile",
   "esri/widgets/LineOfSight"
-], function(UI, intl, WebScene, SceneView, Daylight, ShadowAccumulation, ElevationProfile, LineOfSight) {
+], function(UI, Settings, intl, WebScene, SceneView, Daylight, ShadowAccumulation, ElevationProfile, LineOfSight) {
 
   // Initialization 
   intl.setLocale("nb")
 
+  let scene = new WebScene({
+    portalItem: {
+      id: "f2220db76c6448b4be8083d19ef4cf8d"
+    }
+  })
+
   const view = new SceneView({
     container: "viewDiv",
-
-    map: new WebScene({
-      portalItem: {
-        id: "f2220db76c6448b4be8083d19ef4cf8d"
-      }
-    }),
-
+    map: scene,
     qualityProfile: "high",
     environment: {
       lighting: {
@@ -30,6 +31,7 @@ require([
   });
 
   UI.init(view.ui)
+  Settings.init(view)
 
   // Add widgets
   
