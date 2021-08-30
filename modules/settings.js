@@ -1,13 +1,14 @@
 define([
   "esri/WebScene",
-], function(WebScene) {
+  "modules/SliceWidget.js",
+  "modules/EditorWidget.js"
+], function(WebScene, SliceWidget, EditorWidget) {
   
-  var sceneView
-
   function toggleDefaultScene() {
     let scenes = {
-      USA: 'f2220db76c6448b4be8083d19ef4cf8d', // Default
-      Norge: 'd649e6dfa626418d8b05645f1c46dc5d'
+      shadow: 'f2220db76c6448b4be8083d19ef4cf8d', 
+      editor: 'bd8f9599b6dd42b6bd4f0a5ab381b5b6', // Default
+      slice: '08ba5c76e6ed444185f372b0484fdd8f'
     }
 
     let selector = document.querySelector('#radio-sceneSelect')
@@ -15,7 +16,7 @@ define([
     document.querySelector('#txt-portalID').value = portalId
   }
 
-  function updateScene() {
+  function updateScene(view) {
     let portalId = validateId(document.querySelector('#txt-portalID').value)
     if (portalId) {
       let scene = new WebScene({
@@ -23,7 +24,11 @@ define([
           id: portalId
         }
       })
-      sceneView.map = scene
+      view.map = scene
+      view.when(() => {
+        SliceWidget.enable(view) // Only adds widget if 
+        EditorWidget.enable(view) //Enable editing if editable layer exitst
+      })
     }
   }
 
@@ -44,7 +49,7 @@ define([
 
       document
       .querySelector('#btn-updateScene')
-      .addEventListener('click', updateScene)
+      .addEventListener('click', event => updateScene(view))
 
       document
       .querySelector('#radio-sceneSelect')

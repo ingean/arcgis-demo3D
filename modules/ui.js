@@ -1,18 +1,17 @@
 define([
 ], function() {
-  var sceneUI = null
 
-  function toggleWidgets(event) {
+  function toggleWidgets(event, ui) {
     
     let btn = event.currentTarget
     let btns = document.querySelectorAll('.toggle-widgets')
     btns.forEach(b => {
       b.active = false
-      let widget = sceneUI.find(b.id)
-      widget.visible = false
+      let widget = ui.find(b.id)
+      if (widget) widget.visible = false
     })
     btn.active = true
-    let widget = sceneUI.find(btn.id)
+    let widget = ui.find(btn.id)
     widget.visible = true
   }
 
@@ -43,15 +42,13 @@ define([
     init: (ui) => {
       document
       .querySelectorAll('.toggle-widgets').forEach(element => {
-        element.addEventListener('click', toggleWidgets);   
+        element.addEventListener('click', event => toggleWidgets(event, ui));   
       })
 
       document
       .querySelectorAll('.toggle-panels').forEach(element => {
         element.addEventListener('click', togglePanels);   
       })
-
-      sceneUI = ui
     }
   }
 });

@@ -28,14 +28,19 @@
       <!-- Action bar -->
       <calcite-action-bar>
         <calcite-action-group>
-            <calcite-action id="daylight" class="toggle-widgets" text="Dagslys" icon="brightness" active="true"></calcite-action>
-            <calcite-action id="shadow" class="toggle-widgets" text="Skygge" icon="contrast"></calcite-action>
-            <calcite-action id="elevation" class="toggle-widgets" text="Terrengprofil" icon="altitude"></calcite-action>
-            <calcite-action id="los" class="toggle-widgets" text="Siktlinjer" icon="line-of-sight"></calcite-action>
+          <calcite-action id="layers" class="toggle-widgets" text="Kartlag" icon="layers"></calcite-action>
         </calcite-action-group>
         <calcite-action-group>
-            <calcite-action id="settings" class="toggle-panels" text="Innstillinger" icon="gear"></calcite-action>
+          <calcite-action id="daylight" class="toggle-widgets" text="Dagslys" icon="brightness" active="true"></calcite-action>
+          <calcite-action id="shadow" class="toggle-widgets" text="Skygge" icon="contrast"></calcite-action>
+          <calcite-action id="elevation" class="toggle-widgets" text="Terrengprofil" icon="altitude"></calcite-action>
+          <calcite-action id="los" class="toggle-widgets" text="Siktlinjer" icon="line-of-sight"></calcite-action>
+          <calcite-action id="slice" class="toggle-widgets" text="Snitt" icon="slice" disabled="true"></calcite-action>
         </calcite-action-group>
+        <calcite-action-group>
+          <calcite-action id="editor" class="toggle-widgets" text="Redigering" icon="layers-editable" disabled="true"></calcite-action>
+        </calcite-action-group>
+        <calcite-action id="settings" class="toggle-panels" text="Innstillinger" icon="gear" slot="bottom-actions"></calcite-action>
       </calcite-action-bar>
       
       <!-- Floating Panels -->
@@ -43,12 +48,16 @@
         <calcite-icon class="flow-panel-item" icon="gear" slot="header-actions-end"></calcite-icon>
         <calcite-notice id="notice-portalId" color="red">
           <div slot="title">Ugyldig portal-ID</div>
-          <div slot="message">Angi en gyldig portal-ID til en 3D scene som er offentlig tilgjengelig.</div>
-      </calcite-notice>
-        <calcite-radio-group id="radio-sceneSelect" class="flow-panel-item">
-          <calcite-radio-group-item value="USA" checked>USA</calcite-radio-group-item>
-          <calcite-radio-group-item value="Norge">Norge</calcite-radio-group-item>
-        </calcite-radio-group>
+          <div slot="message">Angi en gyldig id til en ArcGIS Online 3D-scene.</div>
+        </calcite-notice>
+        <calcite-label class="flow-panel-item">
+          Velg et av eksemplene under og aktivere ved å trykke knappen "Bytt webscene"
+          <calcite-radio-group id="radio-sceneSelect" class="flow-panel-item" scale="s">
+            <calcite-radio-group-item value="shadow">Skygge</calcite-radio-group-item>
+            <calcite-radio-group-item value="editor" checked>Redigere</calcite-radio-group-item>
+            <calcite-radio-group-item value="slice">Snitt</calcite-radio-group-item>
+          </calcite-radio-group>
+        </calcite-label>
         <calcite-label class="flow-panel-item">
           Portal item ID:
           <calcite-inline-editable>
@@ -62,6 +71,18 @@
       <!-- Map -->
       <div class="wrapper">
         <div id="viewDiv" class="esri-view"></div>
+        <div id="sliceDiv" class="esri-widget" style="display:none;">
+          <div id="sliceContainer"></div>
+          <div id="sliceOptions">
+            <button
+              class="esri-button esri-button--secondary"
+              id="clearPlaneBtn"
+              type="button"
+              title="Clear slice plane">
+              Fjern sektor
+            </button>
+          </div>
+        </div>
       </div>
     </main>
     
