@@ -2,91 +2,127 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta
-      name="viewport"
-      content="initial-scale=1,maximum-scale=1,user-scalable=no"
-    />
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no" />
+    <title>Geodata AS - Demo av 3D-analyser</title>
+    <link rel="icon" type="image/png" href="./images/geodata-16x16.png" sizes="16x16">
+    <link rel="icon" type="image/png" href="./images/geodata-32x32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="./images/geodata-96x96.png" sizes="96x96">
 
-    <title>Demo | 3D-analyser</title>
-
-    <!-- Stylesheets and favicon -->
-    <link rel="stylesheet" href="https://js.arcgis.com/4.20/esri/themes/light/main.css">
-    <link rel="stylesheet" type="text/css" href="https://js.arcgis.com/calcite-components/1.0.0-beta.61/calcite.css" />
-    <link rel="stylesheet" type="text/css" href="css/main.css" />
-
-    <link rel="shortcut icon" type="image/png" href="images/geodata.png" />
-
-    <script src="https://js.arcgis.com/4.20/"></script>
-    <script type="module" src="https://js.arcgis.com/calcite-components/1.0.0-beta.61/calcite.esm.js"></script>
+    <script src="https://js.arcgis.com/calcite-components/1.0.0-beta.76/calcite.esm.js" type="module"></script>
+    <link rel="stylesheet" href="https://js.arcgis.com/calcite-components/1.0.0-beta.76/calcite.css" />
+    
+    <!--link rel="stylesheet" href="https://js.arcgis.com/4.22/@arcgis/core/assets/esri/themes/light/main.css" /-->
+    <link rel="stylesheet" href="https://js.arcgis.com/4.22/@arcgis/core/assets/esri/themes/dark/main.css" />
+  
+    <link rel="stylesheet" href="./css/main.css" />
   </head>
   <body>
-    
-    <!-- Navigation bar -->
- 
+    <div class="calcite-theme-dark">
 
-    <main>
-      <!-- Action bar -->
-      <calcite-action-bar>
-        <calcite-action-group>
-          <calcite-action id="layers" class="toggle-widgets" text="Kartlag" icon="layers"></calcite-action>
-        </calcite-action-group>
-        <calcite-action-group>
-          <calcite-action id="daylight" class="toggle-widgets" text="Dagslys" icon="brightness" active="true"></calcite-action>
-          <calcite-action id="shadow" class="toggle-widgets" text="Skygge" icon="contrast"></calcite-action>
-          <calcite-action id="elevation" class="toggle-widgets" text="Terrengprofil" icon="altitude"></calcite-action>
-          <calcite-action id="los" class="toggle-widgets" text="Siktlinjer" icon="line-of-sight"></calcite-action>
-          <calcite-action id="slice" class="toggle-widgets" text="Snitt" icon="slice" disabled="true"></calcite-action>
-        </calcite-action-group>
-        <calcite-action-group>
-          <calcite-action id="editor" class="toggle-widgets" text="Redigering" icon="layers-editable" disabled="true"></calcite-action>
-        </calcite-action-group>
-        <calcite-action id="settings" class="toggle-panels" text="Innstillinger" icon="gear" slot="bottom-actions"></calcite-action>
-      </calcite-action-bar>
-      
-      <!-- Floating Panels -->
-      <calcite-panel id="panel-settings" class="panel-right flow-panel" heading="Innstillinger" style="display:none;">
-        <calcite-icon class="flow-panel-item" icon="gear" slot="header-actions-end"></calcite-icon>
-        <calcite-notice id="notice-portalId" color="red">
-          <div slot="title">Ugyldig portal-ID</div>
-          <div slot="message">Angi en gyldig id til en ArcGIS Online 3D-scene.</div>
-        </calcite-notice>
-        <calcite-label class="flow-panel-item">
-          Velg et av eksemplene under og aktivere ved å trykke knappen "Bytt webscene"
-          <calcite-radio-group id="radio-sceneSelect" class="flow-panel-item" scale="s">
-            <calcite-radio-group-item value="shadow">Skygge</calcite-radio-group-item>
-            <calcite-radio-group-item value="editor" checked>Redigere</calcite-radio-group-item>
-            <calcite-radio-group-item value="slice">Snitt</calcite-radio-group-item>
-          </calcite-radio-group>
-        </calcite-label>
-        <calcite-label class="flow-panel-item">
-          Portal item ID:
-          <calcite-inline-editable>
-            <calcite-input id="txt-portalID" class="flow-panel-item" value="f2220db76c6448b4be8083d19ef4cf8d" placeholder="Portal item ID"></calcite-input>
-          </calcite-inline-editable>
-        </calcite-label>
-        <calcite-button id="btn-updateScene" class="flow-panel-item">Bytt webscene</calcite-button>
-      </calcite-panel>
-     
-      
-      <!-- Map -->
-      <div class="wrapper">
-        <div id="viewDiv" class="esri-view"></div>
-        <div id="sliceDiv" class="esri-widget" style="display:none;">
-          <div id="sliceContainer"></div>
-          <div id="sliceOptions">
-            <button
-              class="esri-button esri-button--secondary"
-              id="clearPlaneBtn"
-              type="button"
-              title="Clear slice plane">
-              Fjern sektor
-            </button>
-          </div>
-        </div>
-      </div>
-    </main>
-    
-    <!-- Scripts-->
-    <script type="text/javascript" src="modules/main.js"></script>
+      <calcite-shell content-behind>
+
+        <h2 id="header-title" slot="header">
+          <!--dynamically populated-->
+        </h2>
+  
+        <calcite-loader active></calcite-loader>
+
+        <calcite-shell-panel slot="primary-panel" detached>
+  
+          <calcite-action-bar slot="action-bar">
+            <calcite-action-group>
+              <calcite-action data-action-id="layers" icon="layers" text="Kartlag"></calcite-action>
+              <calcite-action data-action-id="basemaps" icon="basemap" text="Bakgrunnskart"></calcite-action>
+              <calcite-action data-action-id="legend" icon="legend" text="Tegnforklaring"></calcite-action>
+            </calcite-action-group>
+            <calcite-action-group>
+              <calcite-action data-action-id="daylight" icon="brightness" text="Dagslys"></calcite-action>
+              <calcite-action data-action-id="shadow" icon="contrast" text="Skygge"></calcite-action>
+              <calcite-action data-action-id="elevation" icon="altitude" text="Terrengprofil"></calcite-action>
+              <calcite-action data-action-id="los" icon="line-of-sight"  text="Siktlinjer"></calcite-action>
+              <calcite-action data-action-id="slice" icon="slice" text="Snitt" disabled="true"></calcite-action>
+            </calcite-action-group>
+            <calcite-action-group>
+              <calcite-action data-action-id="editor" icon="layers-editable" text="Redigering" disabled="true"></calcite-action>
+            </calcite-action-group>
+            <calcite-action data-action-id="settings" icon="gear" slot="bottom-actions" text="Innstillinger"></calcite-action>
+          </calcite-action-bar>
+  
+          <calcite-panel heading="Kartlag" height-scale="l" width-scale="m" data-panel-id="layers" hidden>
+            <div id="layers-container"></div>
+          </calcite-panel>
+          <calcite-panel heading="Bakgrunnskart" height-scale="l" width-scale="m" data-panel-id="basemaps" hidden>
+            <div id="basemaps-container"></div>
+          </calcite-panel>
+          <calcite-panel heading="Tegnforklaring" height-scale="l" width-scale="m" data-panel-id="legend" hidden>
+            <div id="legend-container"></div>
+          </calcite-panel>
+          <calcite-panel heading="Dagslys" height-scale="l" width-scale="m" data-panel-id="daylight" hidden>
+            <div id="daylight-container"></div>
+          </calcite-panel>
+          <calcite-panel heading="Skygge" height-scale="l" width-scale="m" data-panel-id="shadow" hidden>
+            <div id="shadow-container"></div>
+          </calcite-panel>
+          <calcite-panel heading="Terrengprofil" height-scale="l" width-scale="m" data-panel-id="elevation" hidden>
+            <div id="elevationprofile-container"></div>
+          </calcite-panel>
+          <calcite-panel heading="Siktlinjer" height-scale="l" width-scale="m" data-panel-id="los" hidden>
+            <div id="lineofsight-container"></div>
+          </calcite-panel>
+          <calcite-panel heading="Snitt" height-scale="l" width-scale="m" data-panel-id="slice" hidden>
+            <div id="slice-container"></div>
+          </calcite-panel>
+          <calcite-panel heading="Redigering" height-scale="l" width-scale="m" data-panel-id="editor" hidden>
+            <div id="editor-container"></div>
+          </calcite-panel>
+        
+          <calcite-panel heading="Innstillinger" height-scale="l" width-scale="m" data-panel-id="settings"  hidden>
+            <div class="widget-container">
+              <calcite-notice id="notice-portalId" color="red">
+                <div slot="title">Ugyldig portal-ID</div>
+                <div slot="message">Angi en gyldig id til en ArcGIS Online 3D-scene.</div>
+              </calcite-notice>
+              <calcite-label class="flow-panel-item">
+                Velg et av eksemplene under og aktivere ved å trykke knappen "Bytt webscene" 
+                <calcite-radio-group id="radio-sceneSelect" class="flow-panel-item" scale="s">
+                  <calcite-radio-group-item value="shadow">Skygge</calcite-radio-group-item>
+                  <calcite-radio-group-item value="editor" checked>Redigere</calcite-radio-group-item>
+                  <calcite-radio-group-item value="slice">Snitt</calcite-radio-group-item>
+                </calcite-radio-group>
+              </calcite-label>
+              <calcite-label class="flow-panel-item">
+                Portal item ID:
+                <calcite-inline-editable>
+                  <calcite-input id="txt-portalID" class="flow-panel-item" value="f2220db76c6448b4be8083d19ef4cf8d" placeholder="Portal item ID"></calcite-input>
+                </calcite-inline-editable>
+              </calcite-label>
+              <calcite-button id="btn-updateScene" class="flow-panel-item">Bytt webscene</calcite-button>
+            </div>
+          </calcite-panel>
+
+          <calcite-panel heading="Details" data-panel-id="information" hidden>
+            <div id="info-content">
+              <div id="sliceDiv" class="esri-widget" style="display:none;">
+                <div id="sliceContainer"></div>
+                <div id="sliceOptions">
+                  <button
+                    class="esri-button esri-button--secondary"
+                    id="clearPlaneBtn"
+                    type="button"
+                    title="Clear slice plane">
+                    Fjern sektor
+                  </button>
+                </div>
+              </div>
+            </div>
+          </calcite-panel>
+        </calcite-shell-panel>
+  
+        <div id="viewDiv"></div>
+  
+      </calcite-shell>
+  
+    </div>
   </body>
+  <script type="module" src="js/main.js"></script>
 </html>
