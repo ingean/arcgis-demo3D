@@ -5,7 +5,8 @@ import { authenticate } from './utils/OAuth2.js'
 import Settings from './Settings.js'
 import { initViewShed, abortViewshed } from './ViewShed.js'
 
-const appId = 'xG2kkVesAXGRx5t1' // AppId for arcgis-calcite-template (Dev folder at geodata.maps.arcgis.com) 
+//const appId = 'xG2kkVesAXGRx5t1' // AppId for arcgis-calcite-template (Dev folder at geodata.maps.arcgis.com) 
+const appId = 'iMjGV0Y00vq0Lzz9'
 const websceneId = 'bac30fa0028a41a48c174f1b71e0c379' // Publicly available webmap
 
 const portal = await authenticate(appId) //Authenticate with named user using OAuth2
