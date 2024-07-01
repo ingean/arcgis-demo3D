@@ -1,16 +1,16 @@
-
-import BasemapGallery from 'https://js.arcgis.com/4.22/@arcgis/core/widgets/BasemapGallery.js'
-import LayerList from 'https://js.arcgis.com/4.22/@arcgis/core/widgets/LayerList.js'
-import Legend from 'https://js.arcgis.com/4.22/@arcgis/core/widgets/Legend.js'
-import Fullscreen from "https://js.arcgis.com/4.22/@arcgis/core/widgets/Fullscreen.js"
-import Daylight from 'https://js.arcgis.com/4.22/@arcgis/core/widgets/Daylight.js'
-import ShadowCast from 'https://js.arcgis.com/4.22/@arcgis/core/widgets/ShadowCast.js'
-import ElevationProfile from 'https://js.arcgis.com/4.22/@arcgis/core/widgets/ElevationProfile.js'
-import LineOfSight from 'https://js.arcgis.com/4.22/@arcgis/core/widgets/LineOfSight.js'
-import Slice from 'https://js.arcgis.com/4.22/@arcgis/core/widgets/Slice.js'
-import Editor from 'https://js.arcgis.com/4.22/@arcgis/core/widgets/Editor.js'
-import EditorConfig from './EditorConfig.js'
-import SliceConfig from './SliceConfig.js'
+import Bookmarks from '@arcgis/core/widgets/Bookmarks.js'
+import BasemapGallery from '@arcgis/core/widgets/BasemapGallery.js'
+import LayerList from '@arcgis/core/widgets/LayerList.js'
+import Legend from '@arcgis/core/widgets/Legend.js'
+import Fullscreen from "@arcgis/core/widgets/Fullscreen.js"
+import Daylight from '@arcgis/core/widgets/Daylight.js'
+import ShadowCast from '@arcgis/core/widgets/ShadowCast.js'
+import ElevationProfile from '@arcgis/core/widgets/ElevationProfile.js'
+import LineOfSight from '@arcgis/core/widgets/LineOfSight.js'
+import Slice from '@arcgis/core/widgets/Slice.js'
+import Editor from '@arcgis/core/widgets/Editor.js'
+import EditorConfig from '../EditorConfig.js'
+import SliceConfig from '../SliceConfig.js'
 
 export default class ActionBar {
   constructor(view, defaultActiveWidgetId = null) {
@@ -29,6 +29,10 @@ export default class ActionBar {
       legend: new Legend({
         view,
         container: "legend-container"
+      }),
+      bookmarks: new Bookmarks({
+        view,
+        container: "bookmarks-container"
       }),
       daylight: new Daylight({
         view,

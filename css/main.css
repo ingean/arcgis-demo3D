@@ -11,13 +11,14 @@ body,
   width: 100%;
 }
 
-body {
-  display: flex;
-}
-
 calcite-loader {
   align-self: center;
   justify-self: center;
+}
+
+.flex-row {
+  display: flex;
+  flex-direction: row;
 }
 
 .widget-container {
@@ -27,6 +28,35 @@ calcite-loader {
 #header-title {
   margin-left: 1rem;
   margin-right: 1rem;
+}
+
+#signin {
+  margin-left: auto;
+}
+
+#theme-switcher {
+  position: absolute;
+  right: 105px;
+  margin: 0.75rem;
+  z-index: 2;
+  border: none;
+  background-color: var(--calcite-color-transparent);
+}
+
+.theme-icon {
+  padding: 0.5rem;
+  cursor: pointer;
+}
+
+.panel-tool-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.panel-button {
+  width: 80%;
+  margin: 8px;
 }
 
 #info-content {

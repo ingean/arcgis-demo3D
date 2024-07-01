@@ -1,4 +1,4 @@
-import WebScene from 'https://js.arcgis.com/4.22/@arcgis/core/WebScene.js'
+import WebScene from '@arcgis/core/WebScene.js'
 import EditorConfig from './EditorConfig.js'
 import SliceConfig from './SliceConfig.js'
 

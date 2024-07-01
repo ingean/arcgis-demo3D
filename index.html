@@ -8,38 +8,55 @@
     <link rel="icon" type="image/png" href="./images/geodata-32x32.png" sizes="32x32">
     <link rel="icon" type="image/png" href="./images/geodata-96x96.png" sizes="96x96">
 
-    <script src="https://js.arcgis.com/calcite-components/1.0.0-beta.76/calcite.esm.js" type="module"></script>
-    <link rel="stylesheet" href="https://js.arcgis.com/calcite-components/1.0.0-beta.76/calcite.css" />
+    <script type="importmap">
+      {
+        "imports": {
+          "@arcgis/": "https://js.arcgis.com/4.30/@arcgis/"
+        }
+      }
+    </script>
+
+    <script src="https://js.arcgis.com/calcite-components/2.10.1/calcite.esm.js" type="module"></script>
+    <link rel="stylesheet" href="https://js.arcgis.com/calcite-components/2.10.1/calcite.css" />
     
-    <!--link rel="stylesheet" href="https://js.arcgis.com/4.22/@arcgis/core/assets/esri/themes/light/main.css" /-->
-    <link rel="stylesheet" href="https://js.arcgis.com/4.22/@arcgis/core/assets/esri/themes/dark/main.css" />
+    <link id="jsapi-theme-light" rel="stylesheet" href="https://js.arcgis.com/4.30/@arcgis/core/assets/esri/themes/light/main.css" disabled>
+    <link id="jsapi-theme-dark" rel="stylesheet" href="https://js.arcgis.com/4.30/@arcgis/core/assets/esri/themes/dark/main.css" />
   
     <link rel="stylesheet" href="./css/main.css" />
   </head>
   <body>
-    <div class="calcite-theme-dark">
+    <div id="calcite-theme" class="calcite-mode-dark">
 
       <calcite-shell content-behind>
-
-        <h2 id="header-title" slot="header">
-          <!--dynamically populated-->
-        </h2>
+        <div id="title-toolbar" slot="header" class="flex-row">
+          <h2 id="header-title"></h2>
+          <div id="signin"></div>
+          <div id="theme-switcher">
+            <calcite-label disable-spacing layout="inline">
+              <calcite-icon icon="brightness" scale="s" class="theme-icon"></calcite-icon>
+              <calcite-switch checked></calcite-switch>
+              <calcite-icon icon="moon" scale="s" class="theme-icon"></calcite-icon>
+            </calcite-label>
+          </div>
+        </div>
   
         <calcite-loader active></calcite-loader>
 
-        <calcite-shell-panel slot="primary-panel" detached>
+        <calcite-shell-panel slot="panel-start" detached>
   
-          <calcite-action-bar slot="action-bar">
+          <calcite-action-bar slot="action-bar" intl-collapse="Minimere" intl-expand="Maksimere">
             <calcite-action-group>
               <calcite-action data-action-id="layers" icon="layers" text="Kartlag"></calcite-action>
               <calcite-action data-action-id="basemaps" icon="basemap" text="Bakgrunnskart"></calcite-action>
               <calcite-action data-action-id="legend" icon="legend" text="Tegnforklaring"></calcite-action>
+              <calcite-action data-action-id="bookmarks" icon="bookmark" text="Bokmerker"></calcite-action>
             </calcite-action-group>
             <calcite-action-group>
               <calcite-action data-action-id="daylight" icon="brightness" text="Dagslys"></calcite-action>
               <calcite-action data-action-id="shadow" icon="contrast" text="Skygge"></calcite-action>
               <calcite-action data-action-id="elevation" icon="altitude" text="Terrengprofil"></calcite-action>
               <calcite-action data-action-id="los" icon="line-of-sight"  text="Siktlinjer"></calcite-action>
+              <calcite-action data-action-id="viewshed" icon="viewshed" text="Siktanalyse"></calcite-action>
               <calcite-action data-action-id="slice" icon="slice" text="Snitt" disabled="true"></calcite-action>
             </calcite-action-group>
             <calcite-action-group>
@@ -57,6 +74,9 @@
           <calcite-panel heading="Tegnforklaring" height-scale="l" width-scale="m" data-panel-id="legend" hidden>
             <div id="legend-container"></div>
           </calcite-panel>
+          <calcite-panel heading="Bokmerker" height-scale="l" width-scale="m" data-panel-id="bookmarks" hidden>
+            <div id="bookmarks-container"></div>
+          </calcite-panel>
           <calcite-panel heading="Dagslys" height-scale="l" width-scale="m" data-panel-id="daylight" hidden>
             <div id="daylight-container"></div>
           </calcite-panel>
@@ -68,6 +88,16 @@
           </calcite-panel>
           <calcite-panel heading="Siktlinjer" height-scale="l" width-scale="m" data-panel-id="los" hidden>
             <div id="lineofsight-container"></div>
+          </calcite-panel>
+          <calcite-panel heading="Synlighetsanalyse" height-scale="l" width-scale="m" data-panel-id="viewshed" hidden>
+            <div class="panel-tool-container">
+              <calcite-button id="createButton" class="panel-button" icon-end="viewshed">Start analyse</calcite-button>
+              <calcite-button id="deleteButton" class="panel-button" style="display:none" icon-end="trash" kind="danger">Slett analyser</calcite-button>
+              <calcite-button id="cancelButton" class="panel-button" style="display:none" icon-end="x-circle" kind="inverse">Avbryt</calcite-button>
+              <div id="promptText" style="display: none">
+                <em>Start analysen ved å klikke i 3D-scenen for å sette utkikkspunktet og igjen for å sette målet.</em>
+              </div>
+            </div>
           </calcite-panel>
           <calcite-panel heading="Snitt" height-scale="l" width-scale="m" data-panel-id="slice" hidden>
             <div id="slice-container"></div>

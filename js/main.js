@@ -1,9 +1,14 @@
-import WebScene from 'https://js.arcgis.com/4.22/@arcgis/core/WebScene.js'
-import SceneView from 'https://js.arcgis.com/4.22/@arcgis/core/views/SceneView.js'
-import ActionBar from './ActionBar.js'
+import WebScene from '@arcgis/core/WebScene.js'
+import SceneView from '@arcgis/core/views/SceneView.js'
+import ActionBar from './components/ActionBar.js'
+import { authenticate } from './utils/OAuth2.js'
 import Settings from './Settings.js'
+import { initViewShed, abortViewshed } from './ViewShed.js'
 
-const websceneId = 'bd8f9599b6dd42b6bd4f0a5ab381b5b6' // Publicly available webmap
+const appId = 'xG2kkVesAXGRx5t1' // AppId for arcgis-calcite-template (Dev folder at geodata.maps.arcgis.com) 
+const websceneId = 'bac30fa0028a41a48c174f1b71e0c379' // Publicly available webmap
+
+const portal = await authenticate(appId) //Authenticate with named user using OAuth2
 
 const scene = new WebScene({
   portalItem: {
@@ -24,7 +29,17 @@ await scene.load()
 const actionBar = new ActionBar(view)
 const settings = new Settings(actionBar)
 
-const { title, description, thumbnailUrl, avgRating } = scene.portalItem
-document.querySelector("#header-title").textContent = title
-document.querySelector("calcite-shell").hidden = false
-document.querySelector("calcite-loader").active = false
+scene.when(() => {
+  const { title, description, thumbnailUrl, avgRating } = scene.portalItem
+  document.querySelector("#header-title").textContent = title
+  document.querySelector("calcite-shell").hidden = false
+  document.querySelector("calcite-loader").hidden = true
+  initViewShed(view)
+})
+
+// Cancel the creation process and updates the UI when ESC is pressed.
+view.on("key-down", (event) => {
+  if ((event.key = "Escape")) {
+    abortViewshed()
+  }
+})
