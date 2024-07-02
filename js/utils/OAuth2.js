@@ -1,9 +1,10 @@
- 
-import Portal from '@arcgis/core/portal/Portal.js'
+ import Portal from '@arcgis/core/portal/Portal.js'
 import OAuthInfo from '@arcgis/core/identity/OAuthInfo.js'
 import esriId from '@arcgis/core/identity/IdentityManager.js'
 
 let info = null
+
+const userElement = document.querySelector("calcite-navigation-user")
 
 export const authenticate = (appId) => {
   registerInfo(appId)
@@ -12,7 +13,7 @@ export const authenticate = (appId) => {
       const portal = new Portal() // User is signed in
       portal.authMode = "immediate"
       portal.load().then(() => {
-        updateUIforSignOut(portal.user.thumbnailUrl)
+        updateUIforSignOut(portal.user)
         return resolve(portal)
       })
     }).catch(() => {
@@ -43,34 +44,15 @@ const signOut = () => {
   window.location.reload()
 }
 
-const updateUIforSignOut = (thumbnailUrl) => {
-  let avatar = document.createElement('calcite-avatar')
-  avatar.thumbnail = thumbnailUrl
-  
-  let action = signInAction('signout-action', 'Logg ut')
-  action.addEventListener('click', signOut)
-  action.appendChild(avatar)
-  
-  updateSignInUI(action)
+const updateUIforSignOut = (user) => {
+  userElement.thumbnail = user.thumbnailUrl
+  userElement.fullName = user.fullName
+  userElement.addEventListener('click', signOut)
 }
 
 const updateUIforSignIn = () => {
-  let action = signInAction('signin-action', 'Logg inn', true)
-  action.addEventListener('click', signIn)
-  updateSignInUI(action)
-}
-
-const signInAction = (id, text, textEnabled = false) => {
-  let action = document.createElement('calcite-action')
-  action.id = id
-  action.text = text
-  action.textEnabled = textEnabled
-  if (textEnabled) action.icon = 'user'
-  return action
-}
-
-const updateSignInUI = (action) => {
-  let signIn = document.getElementById('signin')
-  signIn.innerHTML = ''
-  signIn.appendChild(action)
+  userElement.addEventListener('click', signIn)
+  userElement.thumbnail = ''
+  userElement.fullName = ''
+  userElement.username = ''
 }

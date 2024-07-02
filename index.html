@@ -8,6 +8,7 @@
     <link rel="icon" type="image/png" href="./images/geodata-32x32.png" sizes="32x32">
     <link rel="icon" type="image/png" href="./images/geodata-96x96.png" sizes="96x96">
 
+    <!-- ArcGIS Maps SDK for Javascript -->
     <script type="importmap">
       {
         "imports": {
@@ -15,30 +16,24 @@
         }
       }
     </script>
+    <script type="module" src="https://js.arcgis.com/map-components/4.30/arcgis-map-components.esm.js"></script>
+    <link id="jsapi-theme-light" rel="stylesheet" href="https://js.arcgis.com/4.30/@arcgis/core/assets/esri/themes/light/main.css" disabled>
+    <link id="jsapi-theme-dark" rel="stylesheet" href="https://js.arcgis.com/4.30/@arcgis/core/assets/esri/themes/dark/main.css" />
 
+    <!-- ArcGIS Calcite Design System -->
     <script src="https://js.arcgis.com/calcite-components/2.10.1/calcite.esm.js" type="module"></script>
     <link rel="stylesheet" href="https://js.arcgis.com/calcite-components/2.10.1/calcite.css" />
     
-    <link id="jsapi-theme-light" rel="stylesheet" href="https://js.arcgis.com/4.30/@arcgis/core/assets/esri/themes/light/main.css" disabled>
-    <link id="jsapi-theme-dark" rel="stylesheet" href="https://js.arcgis.com/4.30/@arcgis/core/assets/esri/themes/dark/main.css" />
-  
     <link rel="stylesheet" href="./css/main.css" />
   </head>
   <body>
     <div id="calcite-theme" class="calcite-mode-dark">
 
       <calcite-shell content-behind>
-        <div id="title-toolbar" slot="header" class="flex-row">
-          <h2 id="header-title"></h2>
-          <div id="signin"></div>
-          <div id="theme-switcher">
-            <calcite-label disable-spacing layout="inline">
-              <calcite-icon icon="brightness" scale="s" class="theme-icon"></calcite-icon>
-              <calcite-switch checked></calcite-switch>
-              <calcite-icon icon="moon" scale="s" class="theme-icon"></calcite-icon>
-            </calcite-label>
-          </div>
-        </div>
+        <calcite-navigation slot="header">
+          <calcite-navigation-logo slot="logo"></calcite-navigation-logo>
+          <calcite-navigation-user slot="user"></calcite-navigation-user>
+        </calcite-navigation>
   
         <calcite-loader active></calcite-loader>
 
@@ -53,41 +48,47 @@
             </calcite-action-group>
             <calcite-action-group>
               <calcite-action data-action-id="daylight" icon="brightness" text="Dagslys"></calcite-action>
+              <calcite-action data-action-id="weather" icon="rain-snow" text="Vær"></calcite-action>
               <calcite-action data-action-id="shadow" icon="contrast" text="Skygge"></calcite-action>
+            </calcite-action-group>
+            <calcite-action-group>
               <calcite-action data-action-id="elevation" icon="altitude" text="Terrengprofil"></calcite-action>
               <calcite-action data-action-id="los" icon="line-of-sight"  text="Siktlinjer"></calcite-action>
               <calcite-action data-action-id="viewshed" icon="viewshed" text="Siktanalyse"></calcite-action>
-              <calcite-action data-action-id="slice" icon="slice" text="Snitt" disabled="true"></calcite-action>
+              <calcite-action data-action-id="slice" icon="slice" text="Snitt"></calcite-action>
             </calcite-action-group>
             <calcite-action-group>
-              <calcite-action data-action-id="editor" icon="layers-editable" text="Redigering" disabled="true"></calcite-action>
+              <calcite-action data-action-id="editor" icon="layers-editable" text="Redigering"></calcite-action>
             </calcite-action-group>
             <calcite-action data-action-id="settings" icon="gear" slot="bottom-actions" text="Innstillinger"></calcite-action>
           </calcite-action-bar>
   
-          <calcite-panel heading="Kartlag" height-scale="l" width-scale="m" data-panel-id="layers" hidden>
-            <div id="layers-container"></div>
+          <calcite-panel heading="Kartlag" height-scale="l" width-scale="m" data-panel-id="layers">
+            <arcgis-layer-list id="layers-container" reference-element="viewDiv"></arcgis-layer-list>
           </calcite-panel>
           <calcite-panel heading="Bakgrunnskart" height-scale="l" width-scale="m" data-panel-id="basemaps" hidden>
-            <div id="basemaps-container"></div>
+            <arcgis-basemap-gallery id="basemaps-container" reference-element="viewDiv"></arcgis-basemap-gallery>
           </calcite-panel>
           <calcite-panel heading="Tegnforklaring" height-scale="l" width-scale="m" data-panel-id="legend" hidden>
-            <div id="legend-container"></div>
+            <arcgis-legend id="legend-container" reference-element="viewDiv"></arcgis-legend>
           </calcite-panel>
           <calcite-panel heading="Bokmerker" height-scale="l" width-scale="m" data-panel-id="bookmarks" hidden>
-            <div id="bookmarks-container"></div>
+            <arcgis-bookmarks id="bookmarks-container" reference-element="viewDiv"></arcgis-bookmarks>
           </calcite-panel>
           <calcite-panel heading="Dagslys" height-scale="l" width-scale="m" data-panel-id="daylight" hidden>
-            <div id="daylight-container"></div>
+            <arcgis-daylight id="daylight-container" reference-element="viewDiv"></arcgis-daylight>
+          </calcite-panel>
+          <calcite-panel heading="Vær" height-scale="l" width-scale="m" data-panel-id="weather" hidden>
+            <arcgis-weather id="weather-container" reference-element="viewDiv"></arcgis-weather>
           </calcite-panel>
           <calcite-panel heading="Skygge" height-scale="l" width-scale="m" data-panel-id="shadow" hidden>
-            <div id="shadow-container"></div>
+            <arcgis-shadow-cast id="shadow-container"></arcgis-shadow-cast>
           </calcite-panel>
           <calcite-panel heading="Terrengprofil" height-scale="l" width-scale="m" data-panel-id="elevation" hidden>
-            <div id="elevationprofile-container"></div>
+            <arcgis-elevation-profile id="elevationprofile-container" reference-element="viewDiv"></arcgis-elevation-profile>
           </calcite-panel>
           <calcite-panel heading="Siktlinjer" height-scale="l" width-scale="m" data-panel-id="los" hidden>
-            <div id="lineofsight-container"></div>
+            <arcgis-line-of-sight id="lineofsight-container" reference-element="viewDiv"></arcgis-line-of-sight>
           </calcite-panel>
           <calcite-panel heading="Synlighetsanalyse" height-scale="l" width-scale="m" data-panel-id="viewshed" hidden>
             <div class="panel-tool-container">
@@ -100,10 +101,10 @@
             </div>
           </calcite-panel>
           <calcite-panel heading="Snitt" height-scale="l" width-scale="m" data-panel-id="slice" hidden>
-            <div id="slice-container"></div>
+            <arcgis-slice id="slice-container" reference-element="viewDiv"></arcgis-slice>
           </calcite-panel>
           <calcite-panel heading="Redigering" height-scale="l" width-scale="m" data-panel-id="editor" hidden>
-            <div id="editor-container"></div>
+            <arcgis-editor id="editor-container" reference-element="viewDiv"></arcgis-editor>
           </calcite-panel>
         
           <calcite-panel heading="Innstillinger" height-scale="l" width-scale="m" data-panel-id="settings"  hidden>
@@ -113,14 +114,6 @@
                 <div slot="message">Angi en gyldig id til en ArcGIS Online 3D-scene.</div>
               </calcite-notice>
               <calcite-label class="flow-panel-item">
-                Velg et av eksemplene under og aktivere ved å trykke knappen "Bytt webscene" 
-                <calcite-radio-group id="radio-sceneSelect" class="flow-panel-item" scale="s">
-                  <calcite-radio-group-item value="shadow">Skygge</calcite-radio-group-item>
-                  <calcite-radio-group-item value="editor" checked>Redigere</calcite-radio-group-item>
-                  <calcite-radio-group-item value="slice">Snitt</calcite-radio-group-item>
-                </calcite-radio-group>
-              </calcite-label>
-              <calcite-label class="flow-panel-item">
                 Portal item ID:
                 <calcite-inline-editable>
                   <calcite-input id="txt-portalID" class="flow-panel-item" value="f2220db76c6448b4be8083d19ef4cf8d" placeholder="Portal item ID"></calcite-input>
@@ -129,27 +122,9 @@
               <calcite-button id="btn-updateScene" class="flow-panel-item">Bytt webscene</calcite-button>
             </div>
           </calcite-panel>
-
-          <calcite-panel heading="Details" data-panel-id="information" hidden>
-            <div id="info-content">
-              <div id="sliceDiv" class="esri-widget" style="display:none;">
-                <div id="sliceContainer"></div>
-                <div id="sliceOptions">
-                  <button
-                    class="esri-button esri-button--secondary"
-                    id="clearPlaneBtn"
-                    type="button"
-                    title="Clear slice plane">
-                    Fjern sektor
-                  </button>
-                </div>
-              </div>
-            </div>
-          </calcite-panel>
         </calcite-shell-panel>
   
-        <div id="viewDiv"></div>
-  
+        <arcgis-scene id="viewDiv" item-id="bac30fa0028a41a48c174f1b71e0c379"></arcgis-scene>
       </calcite-shell>
   
     </div>
