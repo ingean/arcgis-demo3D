@@ -3,7 +3,7 @@ import { authenticate } from './utils/OAuth2.js'
 import Settings from './Settings.js'
 import { initViewShed, abortViewshed } from './ViewShed.js'
 
-const appId = 'iMjGV0Y00vq0Lzz9'
+const appId = 'w8MteBiiYAwXiNdn'
 const portal = await authenticate(appId)
 const webscene = document.getElementById("viewDiv")
 

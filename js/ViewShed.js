@@ -1,7 +1,6 @@
 import * as reactiveUtils from '@arcgis/core/core/reactiveUtils.js'
 import * as promiseUtils from '@arcgis/core/core/promiseUtils.js'
 import ViewshedAnalysis from '@arcgis/core/analysis/ViewshedAnalysis.js'
-import Viewshed from '@arcgis/core/analysis/Viewshed.js'
 
 const viewshedAnalysis = new ViewshedAnalysis()
 
@@ -29,18 +28,14 @@ createButton.addEventListener("click", () => {
     }
   )
 
-  // Pass the controller as an argument to the interactive creation method
-  // and schedule the updateUI function after creating viewsheds is finished.
   analysisView
     .createViewsheds(abortController)
     .catch((e) => {
-      // When the operation is cancelled, don't do anything. Any other errors are thrown.
       if (!promiseUtils.isAbortError(e)) {
         throw e
       }
     })
     .finally(() => {
-      // Update the UI to reflect the non-creating mode.
       updateUI()
     });
 });
@@ -51,10 +46,8 @@ deleteButton.addEventListener("click", () => {
 })
 
 cancelButton.addEventListener("click", () => {
-  // Pressing the Cancel button stops the viewshed creation process and updates the UI accordingly.
   abortViewshed()
 })
-
 
 // Cancel any pending viewshed creation operation.
 const stopCreating = () => {
